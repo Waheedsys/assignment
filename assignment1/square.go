@@ -9,3 +9,7 @@ func Squareperimeter(sides int) {
 func Reactangle(l, b int) {
 	fmt.Printf("the perimeter of a square is:  %v\n", 2*l+b)
 }
+
+func Sphere(r float64) {
+	fmt.Printf("the perimeter of a square is:  %v\n", float64(4/3)*Pi*r*r*r)
+}
