@@ -1,21 +1,20 @@
 package main
 
-import (
-	"fmt"
-)
+import "github.com/waheedsys/day3/assignment4"
 
 func main() {
-	/*
-		l := []int{4, 1, 7, 3}
-		fmt.Println("before reversing")
-		fmt.Println(l)
-		assignment4.Reverse(l)
-		fmt.Println("after reversing")
-		fmt.Println(l)
+	/*    reverseing the slice
+	l := []int{4, 1, 7, 3}
+	fmt.Println("before reversing")
+	fmt.Println(l)
+	assignment4.Reverse(l)
+	fmt.Println("after reversing")
+	fmt.Println(l)
 
-		assignment4.Takeword("waheed")
+	assignment4.Takeword("waheed")
 	*/
 
+	// sumvalue
 	//myMap := map[string][]int{
 	//	"A": {1, 2, 3},
 	//	"B": {4, 3, 2},
@@ -23,12 +22,15 @@ func main() {
 	//}
 	//
 	//assignment4.SumValuesByKey(myMap)
+
+	//  slice to map
 	//ans := []int{1, 4, 8, 3}
 	//fmt.Println("the slice to map")
 	//fmt.Println("slice", ans)
 	//
 	//assignment4.Slicetomap(ans)
 
+	//set operations
 	//s := assignment4.From(1, 2, 3)
 	//
 	//fmt.Println("Initial set:")
@@ -42,18 +44,22 @@ func main() {
 	//fmt.Println("Set contains 2:", s.Has(2))
 	//fmt.Println("Set contains 5:", s.Has(5))
 
-	newSet := NewSet()
+	newSet := assignment4.NewSet()
+	assignment4.AddIntoSet(newSet, 1)
+	assignment4.PrintSet((newSet))
 
-	AddIntoSet(newSet, 1)
-	AddIntoSet(newSet, 1)
-	PrintSet(newSet)
+	assignment4.AddIntoSet(newSet, 2)
+	assignment4.PrintSet(newSet)
 
-	AddIntoSet(newSet, 2)
-	PrintSet(newSet)
+	assignment4.RemoveElement(newSet, 1)
+	assignment4.PrintSet(newSet)
 
-	RemoveElement(newSet, 1)
-	PrintSet(newSet)
+	// wordmap
+	//fmt.Println(assignment4.Takeword("waheed"))
+
 }
+
+/*
 
 func NewSet() map[int]bool {
 	mp := make(map[int]bool)
@@ -78,3 +84,4 @@ func PrintSet(mp map[int]bool) {
 
 	fmt.Println()
 }
+*/
