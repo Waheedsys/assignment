@@ -44,7 +44,7 @@ func (list *LinkedList) DeleteLast() {
 	}
 	current.next = nil
 
-	fmt.Printf("Last node of linked list has been deleted")
+	fmt.Printf("Last node of linked list has been deleted ")
 }
 
 func (list *LinkedList) Print() {

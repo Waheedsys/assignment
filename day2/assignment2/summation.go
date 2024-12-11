@@ -1,11 +1,9 @@
 package assignment2
 
-import "fmt"
-
-func Sum(n int) {
+func Sum(n int) (s int, err error) {
 	var sum int
 	for j := 1; j <= n; j++ {
 		sum = sum + j
 	}
-	fmt.Println(sum)
+	return sum, nil
 }
