@@ -1,14 +1,14 @@
 package assignment3
 
 type Details struct {
-	Name         string
-	Age          int
-	Phone_number int
+	Name        string
+	Age         int
+	PhoneNumber int
 	Address
 }
 
 type Address struct {
-	City    string
+	City    string `json:"city"`
 	State   string
-	Pincode int
+	PinCode int
 }

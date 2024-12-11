@@ -1,13 +1,10 @@
 package assignment2
 
-import "fmt"
-
-func EvenOrodd(para1 int) {
+func EvenOrodd(para1 int) string {
 	i := para1
 
 	if i%2 == 0 {
-		fmt.Println("even")
-	} else {
-		fmt.Println("odd")
+		return "even"
 	}
+	return "odd"
 }

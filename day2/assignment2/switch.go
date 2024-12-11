@@ -1,13 +1,11 @@
 package assignment2
 
-import "fmt"
-
-func SwitchStatment(para int) {
+func SwitchStatment(para int) string {
 	i := para
 	switch i % 2 {
 	case 0:
-		fmt.Println("even")
+		return "even"
 	default:
-		fmt.Println("odd")
+		return "odd"
 	}
 }
