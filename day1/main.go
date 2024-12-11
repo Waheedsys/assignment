@@ -10,4 +10,5 @@ func main() {
 	assignment1.CirclePerimeter(4)
 	assignment1.Squareperimeter(4)
 	assignment1.Cube(1, 2, 3)
+	assignment1.Sphere(2)
 }
