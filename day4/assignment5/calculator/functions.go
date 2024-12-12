@@ -1,37 +1,40 @@
 package calculator
 
-var global int
-var global1 int
+import (
+	"errors"
+)
 
+// Add performs addition
 func Add(a, b int) int {
-	global = a + b
-	return global
+	return a + b
 }
 
+// Subtract performs subtraction
 func Subtract(a, b int) int {
-	if a < b {
-		global = b - a
-		return global
-	}
-	global = a - b
-	return global
+	return a - b
 }
 
+// Multiply performs multiplication
 func Multiply(a, b int) int {
-	global = a * b
-	return global
+	return a * b
 }
 
-func Divide(a, b int) float64 {
-	global = a / b
-	return float64(global)
+// Divide performs division with error handling for division by zero
+func Divide(a, b int) (float64, error) {
+	if b == 0 {
+		return 0.0, errors.New("cannot divide by zero")
+	}
+	return float64(a) / float64(b), nil
 }
 
-func AddToLastValue(para int) int {
-	global1 = global + para
-	return global1
+// AddToLastValue adds a number to the last result
+// Note: `lastResult` should be passed to this function
+func AddToLastValue(lastResult, para int) int {
+	return lastResult + para
 }
-func SubtractFromLastValue(para int) int {
-	global1 = global - para
-	return global1
+
+// SubtractFromLastValue subtracts a number from the last result
+// Note: `lastResult` should be passed to this function
+func SubtractFromLastValue(lastResult, para int) int {
+	return lastResult - para
 }
