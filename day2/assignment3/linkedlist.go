@@ -26,25 +26,29 @@ func (list *LinkedList) InsertAtBack(data int) {
 
 	current.next = newNode
 }
-
 func (list *LinkedList) DeleteLast() {
+	// Check if the list is empty
 	if list.head == nil {
-		fmt.Printf("Linked list is empty\n")
-	}
-
-	if list.head.next == nil {
-		list.head = nil
-		fmt.Printf("Last node of linked list has been deleted\n")
+		fmt.Println("Linked list is empty")
 		return
 	}
 
-	var current *Node = list.head
-	for current.next.next != nil {
+	// If there's only one node in the list
+	if list.head.next == nil {
+		list.head = nil
+		fmt.Println("Last node of linked list has been deleted")
+		return
+	}
+
+	// Traverse the list to find the second-to-last node
+	current := list.head
+	for current.next != nil && current.next.next != nil {
 		current = current.next
 	}
-	current.next = nil
 
-	fmt.Printf("Last node of linked list has been deleted ")
+	// Remove the last node
+	current.next = nil
+	fmt.Println("Last node of linked list has been deleted")
 }
 
 func (list *LinkedList) Print() {
