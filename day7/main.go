@@ -83,7 +83,7 @@ func Put(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	idStr := r.URL.Path[len("/book/update/"):]
+	idStr := r.URL.Path[len("/book/"):]
 	if idStr == "" {
 		http.Error(w, "Book ID is required", http.StatusBadRequest)
 		return
@@ -112,7 +112,7 @@ func Put(w http.ResponseWriter, r *http.Request) {
 	// Save the updated book
 	err = assignment8.Put(id, updatedBook)
 	if err != nil {
-		http.Error(w, "Failed to update the book: "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "Failed to update the book: "+err.Error(), http.StatusNotFound)
 		return
 	}
 
@@ -127,7 +127,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//get id
-	idStr := r.URL.Path[len("/book/delete/"):]
+	idStr := r.URL.Path[len("/book/"):]
 	if idStr == "" {
 		http.Error(w, "Book ID is required", http.StatusBadRequest)
 		return
@@ -153,13 +153,13 @@ func main() {
 	http.HandleFunc("/book", Post)
 
 	// GET: Retrieve a book by ID (Using /book/{id} route)
-	http.HandleFunc("/book/", Get)
+	http.HandleFunc("/book/id", Get)
 
 	// PUT: Update an existing book by ID (Using /book/update/{id} route)
-	http.HandleFunc("/book/update/", Put)
+	http.HandleFunc("/book/id", Put)
 
 	//delete
-	http.HandleFunc("/book/", Delete)
+	http.HandleFunc("/book/id", Delete)
 
 	// Start the server
 	port := ":5000"
