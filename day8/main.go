@@ -74,7 +74,7 @@ func (s *Store) Addbook(w http.ResponseWriter, r *http.Request) {
 }
 
 // update
-func (s *Store) updatebook(w http.ResponseWriter, r *http.Request) {
+func (s *Store) Updatebook(w http.ResponseWriter, r *http.Request) {
 	idStr := strings.TrimPrefix(r.URL.Path, "/book/")
 	id, err := strconv.Atoi(idStr)
 	if err != nil || id <= 0 {
@@ -97,8 +97,14 @@ func (s *Store) updatebook(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "failed to update the book", http.StatusInternalServerError)
 		return
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("book with id %d updated", id)))
+	err = json.NewEncoder(w).Encode(updatedBook)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+	}
+
 }
 
 // delete
@@ -145,7 +151,7 @@ func main() {
 		case http.MethodGet:
 			store.Getbook(w, r)
 		case http.MethodPut:
-			store.updatebook(w, r)
+			store.Updatebook(w, r)
 		case http.MethodDelete:
 			store.Deletebook(w, r)
 		case http.MethodPost:
