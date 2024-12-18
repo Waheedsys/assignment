@@ -187,27 +187,26 @@ func Test_Deletebook(t *testing.T) {
 	store := NewStore(db)
 
 	for _, tc := range testCases {
-		t.Run(tc.name, func(t *testing.T) {
 
-			url := fmt.Sprintf("/book/%d", tc.id)
-			req := httptest.NewRequest(tc.method, url, nil)
-			w := httptest.NewRecorder()
+		url := fmt.Sprintf("/book/%d", tc.id)
+		req := httptest.NewRequest(tc.method, url, nil)
+		w := httptest.NewRecorder()
 
-			store.Deletebook(w, req)
+		store.Deletebook(w, req)
 
-			resp := w.Result()
-			b, err := io.ReadAll(resp.Body)
-			if err != nil {
-				t.Fatalf("Failed to read response body: %v", err)
-			}
+		resp := w.Result()
+		b, err := io.ReadAll(resp.Body)
+		if err != nil {
+			t.Fatalf("Failed to read response body: %v", err)
+		}
 
-			if string(b) != tc.expected {
-				t.Errorf("Expected body %q, but got %q", tc.expected, string(b))
-			}
+		if string(b) != tc.expected {
+			t.Errorf("Expected body %q, but got %q", tc.expected, string(b))
+		}
 
-			if resp.StatusCode != tc.expStatus {
-				t.Errorf("Expected status %d, but got %d", tc.expStatus, resp.StatusCode)
-			}
-		})
+		if resp.StatusCode != tc.expStatus {
+			t.Errorf("Expected status %d, but got %d", tc.expStatus, resp.StatusCode)
+		}
+
 	}
 }
