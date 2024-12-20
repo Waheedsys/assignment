@@ -14,14 +14,17 @@ import (
 
 func Test_Post(t *testing.T) {
 	createBook := assignment8.Book{
-		0,
-		"three",
-		"two",
+		ID:     1,
+		Name:   "three",
+		Author: "two",
 	}
+
+	fmt.Println(createBook)
+
 	createBook = assignment8.Book{
-		1,
-		"hello",
-		"world",
+		ID:     1,
+		Name:   "hello",
+		Author: "world",
 	}
 
 	createBookBody, err := json.Marshal(createBook)

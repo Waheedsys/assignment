@@ -38,9 +38,11 @@ func Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send back the created book as JSON
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(createdBook)
+	err = json.NewEncoder(w).Encode(createdBook)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 // Get function
@@ -66,8 +68,11 @@ func Get(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		// Send back the book as JSON
-		json.NewEncoder(w).Encode(book)
+		err = json.NewEncoder(w).Encode(book)
+		if err != nil {
+			http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+			return
+		}
 		return
 	}
 
@@ -117,7 +122,11 @@ func Put(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Respond with the updated book
-	json.NewEncoder(w).Encode(updatedBook)
+	err = json.NewEncoder(w).Encode(updatedBook)
+	if err != nil {
+		http.Error(w, "Failed to encode response", http.StatusInternalServerError)
+		return
+	}
 }
 
 // Delete function
@@ -144,8 +153,11 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusNoContent)
-	w.Write([]byte("done"))
+	_, err = w.Write([]byte("done"))
+	if err != nil {
+		http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		return
+	}
 }
 
 func main() {
