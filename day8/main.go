@@ -46,7 +46,11 @@ func (s *Store) Getbook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.Header().Set("content_type", "application/json")
-	json.NewEncoder(w).Encode(book)
+	err = json.NewEncoder(w).Encode(book)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to encode book: %v", err), http.StatusInternalServerError)
+		return
+	}
 }
 
 // post
@@ -70,7 +74,11 @@ func (s *Store) Addbook(w http.ResponseWriter, r *http.Request) {
 	id, _ := result.LastInsertId()
 	book.Id = int(id)
 	w.Header().Set("content_type", "application/json")
-	json.NewEncoder(w).Encode(book)
+	err = json.NewEncoder(w).Encode(book)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Failed to encode book: %v", err), http.StatusInternalServerError)
+		return
+	}
 }
 
 // update
@@ -121,7 +129,11 @@ func (s *Store) Deletebook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusNoContent)
-	w.Write([]byte(fmt.Sprintf("Book with id %d deleted", id)))
+	_, err = w.Write([]byte(fmt.Sprintf("Book with id %d deleted", id)))
+	if err != nil {
+		http.Error(w, "Failed to write response", http.StatusInternalServerError)
+		return
+	}
 }
 
 func main() {
