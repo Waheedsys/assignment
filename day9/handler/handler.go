@@ -4,16 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Waheedsys/entities/entities"
-	"github.com/Waheedsys/entities/services"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 type UserHandler struct {
-	UserService services.UserService
+	UserService UserService
 }
 
-func NewUserHandler(userService services.UserService) *UserHandler {
+func NewUserHandler(userService UserService) *UserHandler {
 	return &UserHandler{UserService: userService}
 }
 
