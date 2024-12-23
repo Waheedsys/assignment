@@ -48,12 +48,7 @@ func (userStore *UsersList) GetUsersByName(name string) (entities.Users, error) 
 		return entities.Users{}, fmt.Errorf("user with username '%s' not found", name)
 	}
 
-	if err != nil {
-		return entities.Users{}, fmt.Errorf("error querying user: %v", err)
-	}
-
 	return user, nil
-
 }
 
 // AddUsers

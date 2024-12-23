@@ -2,21 +2,13 @@ package services
 
 import (
 	"github.com/Waheedsys/entities/entities"
-	"github.com/Waheedsys/entities/stores"
 )
 
-type Userservice interface {
-	GetUsers() ([]entities.Users, error)
-	GetUsersByName(name string) (entities.Users, error)
-	AddUsers(user *entities.Users) error
-	DeleteUsers(name string) error
-	UpdateUsers(name string, updateUser *entities.Users) error
-}
 type UserService struct {
-	store stores.UsersList
+	store UserStore
 }
 
-func NewUserService(store stores.UsersList) *UserService {
+func NewUserService(store UserStore) *UserService {
 	return &UserService{store: store}
 }
 
@@ -37,12 +29,6 @@ func (s *UserService) GetUsersByName(name string) (entities.Users, error) {
 }
 
 func (s *UserService) AddUsers(user *entities.Users) error {
-	//var userval entities.Users
-	//
-	//if err := userval.Validate(user); err != nil {
-	//	return err
-	//}
-
 	return s.store.AddUsers(user)
 }
 
@@ -51,10 +37,5 @@ func (s *UserService) DeleteUsers(name string) error {
 }
 
 func (s *UserService) UpdateUsers(name string, updateUser *entities.Users) error {
-	//var obj entities.Users
-	//if err := obj.Validate(updateUser); err != nil {
-	//	return err
-	//}
-
 	return s.store.UpdateUsers(name, updateUser)
 }

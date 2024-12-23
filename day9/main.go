@@ -28,8 +28,8 @@ func main() {
 	//route ,creating route using mux
 	route := mux.NewRouter()
 	userstore := stores.NewDetails(db)
-	userService := services.NewUserService(*userstore)
-	userHandler := handler.NewUserHandler(*userService)
+	userService := services.NewUserService(userstore)
+	userHandler := handler.NewUserHandler(userService)
 
 	route.HandleFunc("/user", userHandler.AddUser).Methods("POST")
 	route.HandleFunc("/user", userHandler.GetUsers).Methods("GET")
