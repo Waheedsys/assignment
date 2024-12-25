@@ -16,7 +16,7 @@ func Test_GetUsers(t *testing.T) {
 
 	rows := sqlmock.NewRows([]string{"name", "age", "phone_number", "Email"}).
 		AddRow("waheed", 23, "+123456789", "waheed@123.com")
-	mock.ExpectQuery("SELECT UserName,UserAge,Phone_number,Email FROM User").
+	mock.ExpectQuery("SELECT UserName,UserAge,PhoneNumber,Email FROM User").
 		WillReturnRows(rows)
 
 	store := NewDetails(db)
@@ -31,7 +31,6 @@ func Test_GetUsers(t *testing.T) {
 	if len(result) < 1 {
 		t.Errorf("expected length of result 1 but got %v", len(result))
 	}
-
 	if result[0].UserName != "waheed" {
 		t.Errorf("expected name waheed but got %v", result[0].UserName)
 	}
@@ -40,7 +39,7 @@ func Test_GetUsers(t *testing.T) {
 	}
 }
 
-// test update
+// test update.
 func Test_GetUsersByName(t *testing.T) {
 	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
 	if err != nil {
@@ -48,9 +47,9 @@ func Test_GetUsersByName(t *testing.T) {
 	}
 	defer db.Close()
 
-	mock.ExpectQuery("SELECT UserName, UserAge, Phone_number, Email FROM User WHERE Username = ?").
+	mock.ExpectQuery("SELECT UserName, UserAge, PhoneNumber, Email FROM User WHERE Username = ?").
 		WithArgs("waheed1").
-		WillReturnRows(sqlmock.NewRows([]string{"UserName", "UserAge", "Phone_number", "Email"}).
+		WillReturnRows(sqlmock.NewRows([]string{"UserName", "UserAge", "PhoneNumber", "Email"}).
 			AddRow("waheed1", 33, "+123456089", "waheed@123.com"))
 
 	store := NewDetails(db)
@@ -64,14 +63,14 @@ func Test_GetUsersByName(t *testing.T) {
 	if result.Email != "waheed@123.com" {
 		t.Errorf("expected email waheed@123.com but got %v", result.Email)
 	}
-	if result.Phone_number != "+123456089" {
-		t.Errorf("expected number +1230056789 but got %v", result.Phone_number)
+	if result.PhoneNumber != "+123456089" {
+		t.Errorf("expected number +1230056789 but got %v", result.PhoneNumber)
 	}
 	if result.UserAge != 33 {
 		t.Errorf("expected age 23 but got %v", result.UserAge)
 	}
 	// non existing user
-	mock.ExpectQuery("SELECT UserName, UserAge, Phone_number, Email FROM User WHERE Username = ?").
+	mock.ExpectQuery("SELECT UserName, UserAge, PhoneNumber, Email FROM User WHERE Username = ?").
 		WithArgs("non_existing_user").
 		WillReturnError(sql.ErrNoRows)
 
@@ -95,16 +94,16 @@ func Test_AddUsers(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create mock db: %v", err)
 	}
-	defer db.Close()
+
 	testbook := &entities.Users{
-		"waheed1",
-		33,
-		"+123456089",
-		"waheed@123.com",
+		UserName:    "waheed1",
+		UserAge:     33,
+		PhoneNumber: "+123456089",
+		Email:       "waheed@123.com",
 	}
 
-	mock.ExpectExec("INSERT INTO User (UserName, UserAge, Phone_number, Email) VALUES (?, ?, ?, ?)").
-		WithArgs(testbook.UserName, testbook.UserAge, testbook.Phone_number, testbook.Email).
+	mock.ExpectExec("INSERT INTO User (UserName, UserAge, PhoneNumber, Email) VALUES (?, ?, ?, ?)").
+		WithArgs(testbook.UserName, testbook.UserAge, testbook.PhoneNumber, testbook.Email).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	store := NewDetails(db)
@@ -112,20 +111,6 @@ func Test_AddUsers(t *testing.T) {
 	if err != nil {
 		t.Errorf("error while adding the user")
 	}
-	//mock.ExpectExec("INSERT INTO User").
-	//	WithArgs(testbook.UserName, testbook.UserAge, testbook.Phone_number, testbook.Email).
-	//	WillReturnError(fmt.Errorf("'ExecQuery: actual sql: INSERT INTO User (UserName, UserAge, Phone_number, Email) VALUES (?, ?, ?, ?) does not equal to expected INSERT INTO User'"))
-	//userStore := NewDetails(db)
-	//
-	//err = userStore.AddUsers(testbook)
-	//if err == nil {
-	//	t.Fatalf("expected error, got nil")
-	//}
-	//
-	//expectedErr := "database error"
-	//if err.Error() != expectedErr {
-	//	t.Errorf("expected error '%s', got '%s'", expectedErr, err.Error())
-	//}
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfilled expectations: %v", err)
@@ -137,12 +122,13 @@ func Test_DeleteUsers(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create mock db: %v", err)
 	}
-	defer db.Close()
+
+	store := NewDetails(db)
 
 	mock.ExpectExec("DELETE FROM User WHERE UserName = ?").
 		WithArgs("waheed").
 		WillReturnResult(sqlmock.NewResult(0, 1))
-	store := NewDetails(db)
+
 	err = store.DeleteUsers("waheed")
 	if err != nil {
 		t.Errorf("error while deleting")
@@ -153,23 +139,24 @@ func Test_DeleteUsers(t *testing.T) {
 	}
 }
 
-// test update
+// test update.
 func Test_Updatebook(t *testing.T) {
 	db, mock, err := sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
 	if err != nil {
 		t.Fatalf("failed to create mock db: %v", err)
 	}
-	defer db.Close()
+
 	testbook := &entities.Users{
-		"waheed",
-		23,
-		"+1230056789",
-		"waheed@123.com",
+		UserName:    "waheed",
+		UserAge:     23,
+		PhoneNumber: "+1230056789",
+		Email:       "waheed@123.com",
 	}
 
 	mock.ExpectExec("UPDATE User SET Email = ? WHERE UserName = ?").
 		WithArgs(testbook.Email, testbook.UserName).
 		WillReturnResult(sqlmock.NewResult(0, 1))
+
 	store := NewDetails(db)
 
 	err = store.UpdateUsers(testbook.UserName, testbook)

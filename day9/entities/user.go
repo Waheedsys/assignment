@@ -5,11 +5,13 @@ import (
 	"regexp"
 )
 
+var ErrInvalidPhoneNumber = errors.New("invalid phone number")
+
 type Users struct {
-	UserName     string `json:"user_name"`
-	UserAge      int    `json:"user_age"`
-	Phone_number string `json:"phone_Number"`
-	Email        string `json:"email"`
+	UserName    string `json:"user_name"`
+	UserAge     int    `json:"user_age"`
+	PhoneNumber string `json:"phone_Number"`
+	Email       string `json:"email"`
 }
 
 func (u *Users) Validate(users Users) error {
@@ -23,9 +25,9 @@ func (u *Users) Validate(users Users) error {
 
 	phoneRe := `^\+?[0-9]{10,15}$`
 	phone := regexp.MustCompile(phoneRe)
-	isPhoneValid := phone.MatchString(u.Phone_number)
+	isPhoneValid := phone.MatchString(u.PhoneNumber)
 	if !isPhoneValid {
-		return errors.New("Invalid phone number")
+		return ErrInvalidPhoneNumber
 	}
 
 	return nil

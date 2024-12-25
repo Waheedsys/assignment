@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"github.com/Waheedsys/entities/handler"
@@ -10,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -17,16 +19,25 @@ func main() {
 	if err != nil {
 		log.Fatal("Error opening database: ", err)
 	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Error connecting to database: %v", err)
+	}
 	defer db.Close()
 
-	if err := db.Ping(); err != nil {
-		log.Fatal("Error connecting to database: ", err)
-	} else {
-		log.Println("Successfully connected to the database!")
+	log.Println("Successfully connected to the database!")
+
+	route := mux.NewRouter()
+	server := &http.Server{
+		Addr:         ":8080",
+		Handler:      route,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  120 * time.Second,
 	}
 
-	//route ,creating route using mux
-	route := mux.NewRouter()
+	// route ,creating route using mux
 	userstore := stores.NewDetails(db)
 	userService := services.NewUserService(userstore)
 	userHandler := handler.NewUserHandler(userService)
@@ -42,4 +53,16 @@ func main() {
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 	}
+
+	log.Println("Shutting down server...")
+
+	const timeoutDuration = 10 * time.Second
+
+	ctx, cancel := context.WithTimeout(context.Background(), timeoutDuration)
+	defer cancel()
+	if err1 := server.Shutdown(ctx); err1 != nil {
+		log.Fatalf("Server shutdown failed: %v", err1)
+	}
+
+	log.Println("Server gracefully stopped")
 }
